@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { fleetExamples, flightRequestSteps, services } from "@/data/homepage";
-import { WHATSAPP_DEMO_URL } from "@/lib/contact";
+import { WHATSAPP_CONTACT_URL } from "@/lib/contact";
 import { SectionHeading } from "@/components/section-heading";
 import { FlightQuoteForm } from "@/components/flight-quote-form";
 
@@ -214,21 +214,22 @@ export function ContactSection() {
             <p className="eyebrow">Contato</p>
             <h2 className="contact__title">Sua próxima conversa começa aqui.</h2>
             <p className="contact__description">
-              Conte o que você precisa. Os canais oficiais e as informações de
-              atendimento serão atualizados quando forem fornecidos.
+              Fale com a equipe da V4 Aero Consulting pelo canal oficial de
+              WhatsApp.
             </p>
           </div>
           <div className="contact__action">
             <a
               className="button button--accent"
-              href={WHATSAPP_DEMO_URL}
+              href={WHATSAPP_CONTACT_URL}
               target="_blank"
               rel="noopener noreferrer"
             >
               Solicitar voo pelo WhatsApp <span aria-hidden="true">↗</span>
             </a>
             <p className="demo-note">
-              Link demonstrativo, ainda sem número oficial da empresa.
+              Pedidos de cotação são manuais e não representam reserva ou
+              emissão de passagem.
             </p>
           </div>
         </div>

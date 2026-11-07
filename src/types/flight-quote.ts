@@ -7,6 +7,11 @@ export interface FlightQuoteRequest {
   tripType: TripType;
   departureDate: string;
   departureTime: string;
+  requesterName: string;
+  organization: string;
+  phone: string;
+  email: string;
+  observations: string;
   returnDate?: string;
   returnTime?: string;
 }

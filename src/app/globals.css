@@ -1676,6 +1676,27 @@ img {
   font-size: 0.9rem;
 }
 
+.flight-form__textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+
+.flight-form__requester {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.flight-form__label span:not(.flight-form__required) {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+
+.flight-form__required {
+  color: var(--accent-dark);
+}
+
 .flight-form__input::placeholder {
   color: var(--muted);
   opacity: 0.8;
@@ -1892,59 +1913,34 @@ img {
   color: #75291f;
 }
 
+.flight-form__status {
+  margin: 0;
+  border-left: 3px solid var(--accent);
+  background: rgb(217 164 65 / 10%);
+  padding: 0.8rem 1rem;
+  color: var(--ink);
+  font-size: 0.8rem;
+  line-height: 1.65;
+}
+
+.flight-form__fallback-link {
+  justify-self: start;
+  color: var(--accent-dark);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
 .flight-form__submit {
   justify-self: start;
   min-width: 13rem;
   cursor: pointer;
 }
 
-.quote-review {
-  display: grid;
-  gap: 1.25rem;
-  border: 1px solid var(--line);
-  border-radius: var(--card-radius);
-  background: var(--surface);
-  padding: clamp(1.1rem, 3vw, 2rem);
-  box-shadow: var(--card-shadow);
-}
-
-.quote-review__title {
-  margin: 0.5rem 0 0;
-  font-family: var(--font-heading);
-  font-size: 1.6rem;
-  font-weight: 700;
-}
-
-.quote-review__details {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-  margin: 0;
-}
-
-.quote-review__details div {
-  min-width: 0;
-}
-
-.quote-review__details dt {
-  color: var(--muted);
-  font-size: 0.7rem;
-  font-weight: 600;
-}
-
-.quote-review__details dd {
-  margin: 0.3rem 0 0;
-  color: var(--ink);
-  font-size: 0.88rem;
-  line-height: 1.5;
-  overflow-wrap: anywhere;
-}
-
-.quote-review__notice {
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.78rem;
-  line-height: 1.65;
+.flight-form__submit:disabled {
+  cursor: wait;
+  opacity: 0.7;
 }
 
 @media (max-width: 1100px) {
@@ -1981,9 +1977,6 @@ img {
     width: 100%;
   }
 
-  .quote-review__details {
-    grid-template-columns: minmax(0, 1fr);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2068,7 +2061,7 @@ body {
 
 @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .responsive-hero__header {
-    background: rgb(6 28 49 / 25%);
+    background: rgb(6 28 49 / 55%);
     -webkit-backdrop-filter: blur(18px);
     backdrop-filter: blur(18px);
   }
@@ -2076,7 +2069,7 @@ body {
   .responsive-hero__header.is-scrolled {
     top: 12px;
     max-width: 920px;
-    background: rgb(6 28 49 / 25%);
+    background: rgb(6 28 49 / 80%);
     -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
   }
@@ -2117,8 +2110,9 @@ body {
 
 .responsive-hero__nav-link {
   position: relative;
-  color: rgb(245 246 247 / 78%);
-  font-weight: 400;
+  color: rgb(247 248 250 / 92%);
+  font-size: 0.9rem;
+  font-weight: 500;
   letter-spacing: 0.025em;
 }
 
@@ -2157,10 +2151,10 @@ body {
 
 .responsive-hero__content {
   display: grid;
-  grid-template-columns: minmax(0, 0.88fr) minmax(30rem, 1fr);
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
   align-items: center;
   justify-content: initial;
-  gap: clamp(2.5rem, 5vw, 5rem);
+  gap: clamp(2rem, 4vw, 4rem);
   padding-block: 8rem 4rem;
 }
 
@@ -2318,8 +2312,7 @@ body {
 .section-heading__title,
 .institution__title,
 .contact__title,
-.flight-quote__title,
-.quote-review__title {
+.flight-quote__title {
   letter-spacing: -0.04em;
 }
 
@@ -2340,7 +2333,6 @@ body {
 .fleet-card,
 .process-step,
 .contact,
-.quote-review,
 .flight-quote {
   border-color: var(--line);
   background: var(--surface);
@@ -2494,7 +2486,7 @@ body {
   border-top: 1px solid var(--line);
 }
 
-@media (max-width: 1050px) {
+@media (max-width: 920px) {
   .responsive-hero__content {
     grid-template-columns: minmax(0, 1fr);
     gap: 2.5rem;
@@ -2611,6 +2603,10 @@ body {
   .responsive-hero__quote .flight-form__route,
   .responsive-hero__quote .flight-form__trip-options,
   .responsive-hero__quote .flight-form__journey {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .responsive-hero__quote .flight-form__requester {
     grid-template-columns: minmax(0, 1fr);
   }
 

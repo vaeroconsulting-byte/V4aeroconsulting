@@ -5,16 +5,20 @@ import {
   useSyncExternalStore,
   type FormEvent,
 } from "react";
-import { addDaysToLocalDate, formatLocalDate, parseLocalDateKey, toLocalDateKey } from "@/lib/dates";
+import { addDaysToLocalDate, parseLocalDateKey, toLocalDateKey } from "@/lib/dates";
 import type { FlightQuoteRequest, TripType } from "@/types/flight-quote";
 import CalendarThree from "@/components/ui/calendar-03";
+import { buildFlightQuoteMessage, createWhatsAppUrl } from "@/lib/contact";
 
 const subscribeToLocalDate = () => () => {};
 const getServerLocalDate = () => "";
 const getClientLocalDate = () => toLocalDateKey(new Date());
 
-function formatTime(value: string): string {
-  return value ? value.replace(":", "h") : "Não informado";
+function readText(formData: FormData, name: string, limit: number): string {
+  return String(formData.get(name) ?? "")
+    .replace(/[\u0000-\u001f\u007f]/g, " ")
+    .trim()
+    .slice(0, limit);
 }
 
 export function FlightQuoteForm() {
@@ -29,8 +33,10 @@ export function FlightQuoteForm() {
   const [returnDateValue, setReturnDate] = useState("");
   const [returnTime, setReturnTime] = useState("17:00");
   const [openCalendar, setOpenCalendar] = useState<"departure" | "return" | null>(null);
-  const [review, setReview] = useState<FlightQuoteRequest | null>(null);
   const [formError, setFormError] = useState("");
+  const [formStatus, setFormStatus] = useState("");
+  const [whatsAppUrl, setWhatsAppUrl] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const departureDate = departureDateValue;
   const returnDate = returnDateValue;
@@ -39,9 +45,10 @@ export function FlightQuoteForm() {
     ? addDaysToLocalDate(departureDate, 1)
     : addDaysToLocalDate(today, 1);
 
-  function clearReview() {
-    setReview(null);
+  function clearFormFeedback() {
     setFormError("");
+    setFormStatus("");
+    setWhatsAppUrl("");
   }
 
   function handleDepartureDateChange(value: string) {
@@ -52,10 +59,10 @@ export function FlightQuoteForm() {
       return;
     }
 
-    clearReview();
+    clearFormFeedback();
     setDepartureDate(value);
 
-    if (tripType === "round-trip" && returnDate && returnDate <= value) {
+    if (returnDate && returnDate <= value) {
       setReturnDate("");
     }
   }
@@ -65,45 +72,55 @@ export function FlightQuoteForm() {
       return;
     }
 
-    clearReview();
+    clearFormFeedback();
     setReturnDate(value);
   }
 
   function handleTripTypeChange(nextTripType: TripType) {
-    clearReview();
+    clearFormFeedback();
     setTripType(nextTripType);
-
-    if (nextTripType === "one-way") {
-      setReturnDate("");
-    }
 
     setOpenCalendar(null);
   }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    clearReview();
+    clearFormFeedback();
 
     const formData = new FormData(event.currentTarget);
-    const origin = String(formData.get("origin") ?? "").trim();
-    const destination = String(formData.get("destination") ?? "").trim();
+    const origin = readText(formData, "origin", 100);
+    const destination = readText(formData, "destination", 100);
+    const requesterName = readText(formData, "requesterName", 120);
+    const organization = readText(formData, "organization", 120);
+    const phone = readText(formData, "phone", 25);
+    const email = readText(formData, "email", 254);
+    const observations = String(formData.get("observations") ?? "")
+      .replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, "")
+      .trim()
+      .slice(0, 1000);
     const passengersValue = Number(formData.get("passengers"));
     const departureDateValue = String(formData.get("departureDate") ?? "");
     const departureTimeValue = String(formData.get("departureTime") ?? "");
     const departure = parseLocalDateKey(departureDateValue);
     const minimum = parseLocalDateKey(today);
+    const phoneDigits = phone.replace(/\D/g, "");
 
     if (
       !origin ||
       !destination ||
-      !Number.isInteger(passengersValue) ||
+      !requesterName ||
+      phoneDigits.length < 8 ||
+      phoneDigits.length > 15 ||
+      !Number.isSafeInteger(passengersValue) ||
       passengersValue < 1 ||
       !departure ||
       !minimum ||
       departure < minimum ||
-      !departureTimeValue
+      !/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(departureTimeValue)
     ) {
-      setFormError("Confira a origem, o destino, os passageiros e os dados de partida.");
+      setFormError(
+        "Confira os campos obrigatórios, o telefone, os passageiros e os dados de partida.",
+      );
       return;
     }
 
@@ -114,6 +131,11 @@ export function FlightQuoteForm() {
       tripType,
       departureDate: departureDateValue,
       departureTime: departureTimeValue,
+      requesterName,
+      organization,
+      phone,
+      email,
+      observations,
     };
 
     if (tripType === "round-trip") {
@@ -126,7 +148,7 @@ export function FlightQuoteForm() {
         !departureKey ||
         !returnKey ||
         returnKey <= departureKey ||
-        !returnTimeValue
+        !/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(returnTimeValue)
       ) {
         setFormError("A data de retorno deve ser posterior à data de partida.");
         return;
@@ -136,7 +158,25 @@ export function FlightQuoteForm() {
       request.returnTime = returnTimeValue;
     }
 
-    setReview(request);
+    const url = createWhatsAppUrl(buildFlightQuoteMessage(request));
+    setIsSubmitting(true);
+
+    const whatsappWindow = window.open(url, "_blank");
+
+    if (!whatsappWindow) {
+      setWhatsAppUrl(url);
+      setFormError(
+        "O navegador bloqueou a nova janela. Use o link abaixo para abrir o WhatsApp.",
+      );
+      setIsSubmitting(false);
+      return;
+    }
+
+    whatsappWindow.opener = null;
+    setFormStatus(
+      "O WhatsApp foi aberto. A solicitação ainda não foi enviada; confira os dados e confirme o envio por lá.",
+    );
+    setIsSubmitting(false);
   }
 
   return (
@@ -145,8 +185,8 @@ export function FlightQuoteForm() {
         <p className="eyebrow">Solicitação de voo</p>
         <h3 className="flight-quote__title">Conte sobre a sua viagem.</h3>
         <p className="flight-quote__description">
-          Informe um roteiro e horários de preferência para preparar uma
-          solicitação demonstrativa.
+          Informe os dados da viagem e do solicitante para enviar um pedido
+          manual de cotação. Isso não confirma uma reserva nem emite passagens.
         </p>
       </div>
 
@@ -167,8 +207,9 @@ export function FlightQuoteForm() {
               type="text"
               autoComplete="address-level2"
               placeholder="Cidade ou aeroporto"
+              maxLength={100}
               required
-              onChange={clearReview}
+              onChange={clearFormFeedback}
             />
           </div>
           <div className="flight-form__field">
@@ -182,8 +223,9 @@ export function FlightQuoteForm() {
               type="text"
               autoComplete="address-level2"
               placeholder="Cidade ou aeroporto"
+              maxLength={100}
               required
-              onChange={clearReview}
+              onChange={clearFormFeedback}
             />
           </div>
         </div>
@@ -227,7 +269,7 @@ export function FlightQuoteForm() {
               step={1}
               defaultValue={1}
               required
-              onChange={clearReview}
+              onChange={clearFormFeedback}
             />
           </div>
         </div>
@@ -253,7 +295,7 @@ export function FlightQuoteForm() {
               onClose={() => setOpenCalendar(null)}
               onDateChange={handleDepartureDateChange}
               onTimeChange={(value) => {
-                clearReview();
+                clearFormFeedback();
                 setDepartureTime(value);
               }}
             />
@@ -276,7 +318,7 @@ export function FlightQuoteForm() {
                 onClose={() => setOpenCalendar(null)}
                 onDateChange={handleReturnDateChange}
                 onTimeChange={(value) => {
-                  clearReview();
+                  clearFormFeedback();
                   setReturnTime(value);
                 }}
               />
@@ -289,68 +331,120 @@ export function FlightQuoteForm() {
           disponibilidade confirmada.
         </p>
 
+        <div className="flight-form__field">
+          <label className="flight-form__label" htmlFor="flight-observations">
+            Observações <span>(opcional)</span>
+          </label>
+          <textarea
+            className="flight-form__input flight-form__textarea"
+            id="flight-observations"
+            name="observations"
+            rows={3}
+            maxLength={1000}
+            placeholder="Inclua informações relevantes para a cotação"
+            onChange={clearFormFeedback}
+          />
+        </div>
+
+        <div className="flight-form__step-heading">
+          <span aria-hidden="true">03</span>
+          <h4>Identificação do solicitante</h4>
+        </div>
+        <div className="flight-form__requester">
+          <div className="flight-form__field">
+            <label className="flight-form__label" htmlFor="flight-requester-name">
+              Nome completo <span className="flight-form__required" aria-hidden="true">*</span>
+            </label>
+            <input
+              className="flight-form__input"
+              id="flight-requester-name"
+              name="requesterName"
+              type="text"
+              autoComplete="name"
+              maxLength={120}
+              required
+              onChange={clearFormFeedback}
+            />
+          </div>
+          <div className="flight-form__field">
+            <label className="flight-form__label" htmlFor="flight-organization">
+              Empresa / Organização <span>(opcional)</span>
+            </label>
+            <input
+              className="flight-form__input"
+              id="flight-organization"
+              name="organization"
+              type="text"
+              autoComplete="organization"
+              maxLength={120}
+              onChange={clearFormFeedback}
+            />
+          </div>
+          <div className="flight-form__field">
+            <label className="flight-form__label" htmlFor="flight-phone">
+              Telefone / WhatsApp <span className="flight-form__required" aria-hidden="true">*</span>
+            </label>
+            <input
+              className="flight-form__input"
+              id="flight-phone"
+              name="phone"
+              type="tel"
+              inputMode="tel"
+              autoComplete="tel"
+              maxLength={25}
+              required
+              onChange={clearFormFeedback}
+            />
+          </div>
+          <div className="flight-form__field">
+            <label className="flight-form__label" htmlFor="flight-email">
+              E-mail <span>(opcional)</span>
+            </label>
+            <input
+              className="flight-form__input"
+              id="flight-email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              maxLength={254}
+              onChange={clearFormFeedback}
+            />
+          </div>
+        </div>
+
         {formError ? (
           <p className="flight-form__error" role="alert">
             {formError}
           </p>
         ) : null}
+        {formStatus ? (
+          <p className="flight-form__status" role="status" aria-live="polite">
+            {formStatus}
+          </p>
+        ) : null}
+        {whatsAppUrl ? (
+          <a
+            className="flight-form__fallback-link"
+            href={whatsAppUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Abrir solicitação no WhatsApp <span aria-hidden="true">↗</span>
+          </a>
+        ) : null}
 
         <div className="flight-form__step-heading">
-          <span aria-hidden="true">03</span>
-          <h4>Confirmação</h4>
+          <span aria-hidden="true">04</span>
+          <h4>Envio da solicitação</h4>
         </div>
-        <button className="button button--accent flight-form__submit" type="submit">
-          Revisar solicitação <span aria-hidden="true">→</span>
+        <button
+          className="button button--accent flight-form__submit"
+          type="submit"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Abrindo WhatsApp..." : "Enviar solicitação pelo WhatsApp"}
+          {!isSubmitting ? <span aria-hidden="true">↗</span> : null}
         </button>
-
-        {review ? (
-          <section className="quote-review" aria-labelledby="quote-review-title">
-            <div>
-              <p className="eyebrow">Revisão local</p>
-              <h4 className="quote-review__title" id="quote-review-title">
-                Confira os dados da viagem.
-              </h4>
-            </div>
-            <dl className="quote-review__details">
-              <div>
-                <dt>Trecho</dt>
-                <dd>
-                  {review.origin} → {review.destination}
-                </dd>
-              </div>
-              <div>
-                <dt>Passageiros</dt>
-                <dd>{review.passengers}</dd>
-              </div>
-              <div>
-                <dt>Tipo de viagem</dt>
-                <dd>
-                  {review.tripType === "round-trip" ? "Ida e volta" : "Somente ida"}
-                </dd>
-              </div>
-              <div>
-                <dt>Partida</dt>
-                <dd>
-                  {formatLocalDate(review.departureDate)} às{" "}
-                  {formatTime(review.departureTime)}
-                </dd>
-              </div>
-              {review.returnDate && review.returnTime ? (
-                <div>
-                  <dt>Retorno</dt>
-                  <dd>
-                    {formatLocalDate(review.returnDate)} às{" "}
-                    {formatTime(review.returnTime)}
-                  </dd>
-                </div>
-              ) : null}
-            </dl>
-            <p className="quote-review__notice" role="status" aria-live="polite">
-              Nenhuma solicitação foi enviada. Os dados ficam somente nesta
-              página até a futura integração com um serviço de cotação.
-            </p>
-          </section>
-        ) : null}
       </form>
     </div>
   );
