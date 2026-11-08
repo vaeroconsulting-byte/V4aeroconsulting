@@ -95,7 +95,7 @@ export function ServicesSection() {
                     {service.description}
                   </p>
                   <a className="service-card__link" href="#solicitar">
-                    Solicitar informações <span aria-hidden="true">↗</span>
+                    Solicitar informações
                   </a>
                 </div>
               </article>
@@ -122,7 +122,7 @@ export function DestinationsSection() {
           </p>
         </div>
         <a className="button button--outline" href="#solicitar">
-          Planejar uma viagem <span aria-hidden="true">↗</span>
+          Planejar uma viagem
         </a>
         <span className="destinations-panel__note">
           Conteúdo demonstrativo. Destinos ainda não confirmados.
@@ -161,7 +161,7 @@ export function FleetSection() {
                   Categoria e especificações a confirmar.
                 </p>
                 <a className="service-card__link" href="#solicitar">
-                  Solicitar informações <span aria-hidden="true">↗</span>
+                  Solicitar informações
                 </a>
               </div>
             </article>
@@ -225,7 +225,7 @@ export function ContactSection() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Solicitar voo pelo WhatsApp <span aria-hidden="true">↗</span>
+              Solicitar voo pelo WhatsApp
             </a>
             <p className="demo-note">
               Pedidos de cotação são manuais e não representam reserva ou

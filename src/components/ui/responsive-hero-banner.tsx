@@ -165,7 +165,6 @@ export function ResponsiveHeroBanner({
               onClick={closeMenu}
             >
               {ctaButtonText}
-              <span aria-hidden="true">↗</span>
             </a>
           </nav>
         </div>
@@ -196,7 +195,6 @@ export function ResponsiveHeroBanner({
               onClick={closeMenu}
             >
               {primaryButtonText}
-              <span aria-hidden="true">↗</span>
             </a>
             <a
               className="button button--outline"

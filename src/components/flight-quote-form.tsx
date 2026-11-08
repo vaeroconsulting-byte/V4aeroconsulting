@@ -805,7 +805,6 @@ export function FlightQuoteForm() {
               {isSubmitting
                 ? "Abrindo WhatsApp..."
                 : "Enviar solicitação pelo WhatsApp"}
-              {!isSubmitting ? <span aria-hidden="true">↗</span> : null}
             </button>
           </div>
         </section>
@@ -827,7 +826,7 @@ export function FlightQuoteForm() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Abrir solicitação no WhatsApp <span aria-hidden="true">↗</span>
+            Abrir solicitação no WhatsApp
           </a>
         ) : null}
 
