@@ -2673,6 +2673,14 @@ body {
     min-height: 4.5rem;
   }
 
+  .responsive-hero__navigation[data-open="false"] {
+    display: none;
+  }
+
+  .responsive-hero__navigation[data-open="true"] {
+    display: flex;
+  }
+
   .responsive-hero__header.is-scrolled {
     top: 8px;
     width: calc(100% - 24px);

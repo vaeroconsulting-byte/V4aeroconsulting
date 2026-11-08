@@ -39,6 +39,7 @@ export function ResponsiveHeroBanner({
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const menuToggleRef = useRef<HTMLButtonElement>(null);
+  const navigationRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     function updateScrollState() {
@@ -93,6 +94,27 @@ export function ResponsiveHeroBanner({
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [isMenuOpen]);
 
+  useEffect(() => {
+    if (!isMenuOpen) {
+      return;
+    }
+
+    function handleOutsidePointerDown(event: PointerEvent) {
+      const target = event.target;
+      if (
+        target instanceof Node &&
+        !navigationRef.current?.contains(target) &&
+        !menuToggleRef.current?.contains(target)
+      ) {
+        setIsMenuOpen(false);
+      }
+    }
+
+    document.addEventListener("pointerdown", handleOutsidePointerDown);
+    return () =>
+      document.removeEventListener("pointerdown", handleOutsidePointerDown);
+  }, [isMenuOpen]);
+
   function closeMenu() {
     setIsMenuOpen(false);
     if (isMenuOpen) {
@@ -141,6 +163,7 @@ export function ResponsiveHeroBanner({
           </button>
 
           <nav
+            ref={navigationRef}
             className="responsive-hero__navigation"
             id="primary-navigation"
             aria-label="Navegação principal"
