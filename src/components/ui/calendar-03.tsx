@@ -20,6 +20,8 @@ export interface CalendarThreeProps {
   minimumDate: string;
   todayDate: string;
   selectedTime: string;
+  dateError?: string;
+  timeError?: string;
   open: boolean;
   onOpen: () => void;
   onClose: () => void;
@@ -41,6 +43,8 @@ export default function CalendarThree({
   minimumDate,
   todayDate,
   selectedTime,
+  dateError,
+  timeError,
   open,
   onOpen,
   onClose,
@@ -119,6 +123,8 @@ export default function CalendarThree({
         type="button"
         aria-expanded={open}
         aria-controls={`${id}-panel`}
+        data-invalid={Boolean(dateError)}
+        aria-describedby={dateError ? `${id}-date-error` : undefined}
         onFocus={() => {
           if (skipFocusOpen.current) {
             skipFocusOpen.current = false;
@@ -193,6 +199,8 @@ export default function CalendarThree({
               step={60}
               value={selectedTime}
               required
+              aria-invalid={Boolean(timeError)}
+              aria-describedby={timeError ? `${id}-time-error` : undefined}
               onChange={(event) => onTimeChange(event.currentTarget.value)}
             />
             <div className="calendar-03-picker__time-list" role="group" aria-label="Sugestões de horário">

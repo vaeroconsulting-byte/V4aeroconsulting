@@ -9,7 +9,7 @@ export function InstitutionSection() {
     <section className="section section--surface" id="empresa">
       <div className="container">
         <div className="institution">
-          <div className="institution__intro">
+          <div className="institution__intro" data-scroll-reveal>
             <p className="eyebrow">Apresentação institucional</p>
             <h2 className="institution__title">
               A identidade da empresa começa pela sua história.
@@ -20,7 +20,7 @@ export function InstitutionSection() {
               demonstrativo e deverá ser substituído após o briefing.
             </p>
           </div>
-          <div className="institution__visual">
+          <div className="institution__visual" data-scroll-reveal>
             <Image
               src="/images/aircraft-tarmac.webp"
               alt="Aeronave estacionada em um pátio aeroportuário, fotografia ilustrativa."
@@ -35,21 +35,21 @@ export function InstitutionSection() {
           </div>
         </div>
         <div className="institution__details" aria-label="Informações institucionais demonstrativas">
-          <article className="institution__detail">
+          <article className="institution__detail" data-scroll-reveal>
             <h3 className="institution__detail-title">Posicionamento</h3>
             <p>
               Espaço para apresentar como a empresa se posiciona no setor
               aeronáutico, com conteúdo a confirmar.
             </p>
           </article>
-          <article className="institution__detail">
+          <article className="institution__detail" data-scroll-reveal>
             <h3 className="institution__detail-title">Diferenciais</h3>
             <p>
               Atributos e compromissos serão descritos somente após validação
               das informações oficiais.
             </p>
           </article>
-          <article className="institution__detail">
+          <article className="institution__detail" data-scroll-reveal>
             <h3 className="institution__detail-title">Área de atuação</h3>
             <p>
               Regiões e mercados atendidos serão informados quando forem
@@ -72,7 +72,7 @@ export function ServicesSection() {
           description="Conheça algumas categorias de referência para a apresentação dos serviços da empresa."
           note="Categorias e textos demonstrativos; não representam uma confirmação dos serviços oferecidos."
         />
-        <div className="experience-layout" id="experiencia">
+        <div className="experience-layout" id="experiencia" data-scroll-reveal>
           <div className="experience-layout__visual">
             <Image
               src="/images/aircraft-wing.webp"
@@ -110,7 +110,7 @@ export function ServicesSection() {
 export function DestinationsSection() {
   return (
     <section className="section section--destinations" id="destinos">
-      <div className="container destinations-panel">
+      <div className="container destinations-panel" data-scroll-reveal>
         <div>
           <p className="eyebrow">Destinos</p>
           <h2 className="destinations-panel__title">
@@ -144,7 +144,7 @@ export function FleetSection() {
         />
         <div className="fleet-grid">
           {fleetExamples.map((aircraft) => (
-            <article className="fleet-card" key={aircraft.title}>
+            <article className="fleet-card" key={aircraft.title} data-scroll-reveal>
               <div className="fleet-card__image">
                 <Image
                   src={aircraft.image}
@@ -184,7 +184,7 @@ export function FlightRequestSection() {
         />
         <div className="process-grid">
           {flightRequestSteps.map((step) => (
-            <article className="process-step" key={step.title}>
+            <article className="process-step" key={step.title} data-scroll-reveal>
               <h3 className="process-step__title">{step.title}</h3>
               <p className="process-step__description">{step.description}</p>
             </article>
@@ -209,7 +209,7 @@ export function ContactSection() {
   return (
     <section className="section section--surface">
       <div className="container">
-        <div className="contact" id="contato">
+        <div className="contact" id="contato" data-scroll-reveal>
           <div>
             <p className="eyebrow">Contato</p>
             <h2 className="contact__title">Sua próxima conversa começa aqui.</h2>

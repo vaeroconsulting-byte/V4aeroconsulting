@@ -8,6 +8,7 @@ import {
 } from "@/components/home-sections";
 import { DemoOne } from "@/components/ui/demo";
 import { ResponsiveHeroBanner } from "@/components/ui/responsive-hero-banner";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { FlightQuoteForm } from "@/components/flight-quote-form";
 import { SiteFooter } from "@/components/site-footer";
 
@@ -30,12 +31,14 @@ export function HomePage() {
           quoteForm={<FlightQuoteForm />}
         />
         <DemoOne />
-        <InstitutionSection />
-        <ServicesSection />
-        <DestinationsSection />
-        <FleetSection />
-        <FlightRequestSection />
-        <ContactSection />
+        <ScrollReveal>
+          <InstitutionSection />
+          <ServicesSection />
+          <DestinationsSection />
+          <FleetSection />
+          <FlightRequestSection />
+          <ContactSection />
+        </ScrollReveal>
       </main>
       <SiteFooter />
     </>
