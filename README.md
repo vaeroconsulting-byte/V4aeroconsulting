@@ -36,5 +36,7 @@ O alias `@/*` aponta para `src/*`.
 Os tokens de cor, tipografia, largura de conteúdo e espaçamento estão
 centralizados no início de `src/app/globals.css` para facilitar a substituição
 após o recebimento do briefing e da identidade oficial. As fotografias locais
-são ilustrativas. O link de WhatsApp usa uma URL demonstrativa sem número de
-destino e deve ser substituído pelo canal oficial antes de entrar em produção.
+são ilustrativas. O formulário monta uma solicitação de cotação e abre o canal
+oficial de WhatsApp configurado em `src/lib/contact.ts`; o usuário ainda precisa
+confirmar o envio no WhatsApp. Esse fluxo não confirma reservas nem emite
+passagens.

@@ -12,7 +12,7 @@ export function SectionHeading({
   note,
 }: SectionHeadingProps) {
   return (
-    <div className="section-heading">
+    <div className="section-heading" data-scroll-reveal>
       <p className="eyebrow">{eyebrow}</p>
       <h2 className="section-heading__title">{title}</h2>
       <p className="section-heading__description">{description}</p>

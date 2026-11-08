@@ -71,7 +71,6 @@ const SmoothScroll = forwardRef<HTMLElement>(function SmoothScroll(_, ref) {
           </p>
           <a className="button button--accent" href="#frota">
             Conhecer a prévia da frota
-            <span aria-hidden="true">↗</span>
           </a>
         </div>
       </section>
@@ -106,7 +105,6 @@ const SmoothScroll = forwardRef<HTMLElement>(function SmoothScroll(_, ref) {
           </p>
           <a className="button button--light" href="#solicitar">
             Solicitar um voo
-            <span aria-hidden="true">↗</span>
           </a>
         </div>
       </section>

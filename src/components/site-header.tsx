@@ -12,7 +12,7 @@ export function SiteHeader() {
           <a href="#servicos">Serviços</a>
           <a href="#frota">Frota</a>
           <a className="button button--accent site-nav__cta" href="#solicitar">
-            Solicitar voo <span aria-hidden="true">↗</span>
+            Solicitar voo
           </a>
         </nav>
       </div>

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { fleetExamples, flightRequestSteps, services } from "@/data/homepage";
-import { WHATSAPP_DEMO_URL } from "@/lib/contact";
+import { WHATSAPP_CONTACT_URL } from "@/lib/contact";
 import { SectionHeading } from "@/components/section-heading";
 import { FlightQuoteForm } from "@/components/flight-quote-form";
 
@@ -9,7 +9,7 @@ export function InstitutionSection() {
     <section className="section section--surface" id="empresa">
       <div className="container">
         <div className="institution">
-          <div className="institution__intro">
+          <div className="institution__intro" data-scroll-reveal>
             <p className="eyebrow">Apresentação institucional</p>
             <h2 className="institution__title">
               A identidade da empresa começa pela sua história.
@@ -20,7 +20,7 @@ export function InstitutionSection() {
               demonstrativo e deverá ser substituído após o briefing.
             </p>
           </div>
-          <div className="institution__visual">
+          <div className="institution__visual" data-scroll-reveal>
             <Image
               src="/images/aircraft-tarmac.webp"
               alt="Aeronave estacionada em um pátio aeroportuário, fotografia ilustrativa."
@@ -35,21 +35,21 @@ export function InstitutionSection() {
           </div>
         </div>
         <div className="institution__details" aria-label="Informações institucionais demonstrativas">
-          <article className="institution__detail">
+          <article className="institution__detail" data-scroll-reveal>
             <h3 className="institution__detail-title">Posicionamento</h3>
             <p>
               Espaço para apresentar como a empresa se posiciona no setor
               aeronáutico, com conteúdo a confirmar.
             </p>
           </article>
-          <article className="institution__detail">
+          <article className="institution__detail" data-scroll-reveal>
             <h3 className="institution__detail-title">Diferenciais</h3>
             <p>
               Atributos e compromissos serão descritos somente após validação
               das informações oficiais.
             </p>
           </article>
-          <article className="institution__detail">
+          <article className="institution__detail" data-scroll-reveal>
             <h3 className="institution__detail-title">Área de atuação</h3>
             <p>
               Regiões e mercados atendidos serão informados quando forem
@@ -72,7 +72,7 @@ export function ServicesSection() {
           description="Conheça algumas categorias de referência para a apresentação dos serviços da empresa."
           note="Categorias e textos demonstrativos; não representam uma confirmação dos serviços oferecidos."
         />
-        <div className="experience-layout" id="experiencia">
+        <div className="experience-layout" id="experiencia" data-scroll-reveal>
           <div className="experience-layout__visual">
             <Image
               src="/images/aircraft-wing.webp"
@@ -95,7 +95,7 @@ export function ServicesSection() {
                     {service.description}
                   </p>
                   <a className="service-card__link" href="#solicitar">
-                    Solicitar informações <span aria-hidden="true">↗</span>
+                    Solicitar informações
                   </a>
                 </div>
               </article>
@@ -110,7 +110,7 @@ export function ServicesSection() {
 export function DestinationsSection() {
   return (
     <section className="section section--destinations" id="destinos">
-      <div className="container destinations-panel">
+      <div className="container destinations-panel" data-scroll-reveal>
         <div>
           <p className="eyebrow">Destinos</p>
           <h2 className="destinations-panel__title">
@@ -122,7 +122,7 @@ export function DestinationsSection() {
           </p>
         </div>
         <a className="button button--outline" href="#solicitar">
-          Planejar uma viagem <span aria-hidden="true">↗</span>
+          Planejar uma viagem
         </a>
         <span className="destinations-panel__note">
           Conteúdo demonstrativo. Destinos ainda não confirmados.
@@ -144,7 +144,7 @@ export function FleetSection() {
         />
         <div className="fleet-grid">
           {fleetExamples.map((aircraft) => (
-            <article className="fleet-card" key={aircraft.title}>
+            <article className="fleet-card" key={aircraft.title} data-scroll-reveal>
               <div className="fleet-card__image">
                 <Image
                   src={aircraft.image}
@@ -161,7 +161,7 @@ export function FleetSection() {
                   Categoria e especificações a confirmar.
                 </p>
                 <a className="service-card__link" href="#solicitar">
-                  Solicitar informações <span aria-hidden="true">↗</span>
+                  Solicitar informações
                 </a>
               </div>
             </article>
@@ -184,7 +184,7 @@ export function FlightRequestSection() {
         />
         <div className="process-grid">
           {flightRequestSteps.map((step) => (
-            <article className="process-step" key={step.title}>
+            <article className="process-step" key={step.title} data-scroll-reveal>
               <h3 className="process-step__title">{step.title}</h3>
               <p className="process-step__description">{step.description}</p>
             </article>
@@ -209,26 +209,27 @@ export function ContactSection() {
   return (
     <section className="section section--surface">
       <div className="container">
-        <div className="contact" id="contato">
+        <div className="contact" id="contato" data-scroll-reveal>
           <div>
             <p className="eyebrow">Contato</p>
             <h2 className="contact__title">Sua próxima conversa começa aqui.</h2>
             <p className="contact__description">
-              Conte o que você precisa. Os canais oficiais e as informações de
-              atendimento serão atualizados quando forem fornecidos.
+              Fale com a equipe da V4 Aero Consulting pelo canal oficial de
+              WhatsApp.
             </p>
           </div>
           <div className="contact__action">
             <a
               className="button button--accent"
-              href={WHATSAPP_DEMO_URL}
+              href={WHATSAPP_CONTACT_URL}
               target="_blank"
               rel="noopener noreferrer"
             >
-              Solicitar voo pelo WhatsApp <span aria-hidden="true">↗</span>
+              Solicitar voo pelo WhatsApp
             </a>
             <p className="demo-note">
-              Link demonstrativo, ainda sem número oficial da empresa.
+              Pedidos de cotação são manuais e não representam reserva ou
+              emissão de passagem.
             </p>
           </div>
         </div>
