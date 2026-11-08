@@ -2377,7 +2377,6 @@ body {
 
 .responsive-hero__quote .flight-quote {
   display: flex;
-  min-height: 39rem;
   flex-direction: column;
   margin: 0;
   border: 0;
@@ -2402,8 +2401,8 @@ body {
 }
 
 .responsive-hero__quote .flight-form {
-  flex: 1;
-  align-content: space-between;
+  flex: 0 0 auto;
+  align-content: start;
   gap: 1rem;
 }
 
@@ -2767,7 +2766,6 @@ body {
   }
 
   .responsive-hero__quote .flight-quote {
-    min-height: 0;
     padding: 1.1rem;
   }
 
