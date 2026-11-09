@@ -61,6 +61,8 @@ export function FlightQuoteForm() {
   const [formStatus, setFormStatus] = useState("");
   const [whatsAppUrl, setWhatsAppUrl] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hasOpenedWhatsApp, setHasOpenedWhatsApp] = useState(false);
+  const submissionLockRef = useRef(false);
 
   const departureDate = departureDateValue;
   const returnDate = returnDateValue;
@@ -287,6 +289,10 @@ export function FlightQuoteForm() {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (submissionLockRef.current) {
+      return;
+    }
+
     clearFormFeedback();
 
     const form = event.currentTarget;
@@ -336,11 +342,13 @@ export function FlightQuoteForm() {
     }
 
     const url = createWhatsAppUrl(buildFlightQuoteMessage(request));
+    submissionLockRef.current = true;
     setIsSubmitting(true);
 
     const whatsappWindow = window.open(url, "_blank");
 
     if (!whatsappWindow) {
+      submissionLockRef.current = false;
       setWhatsAppUrl(url);
       setFormError(
         "O navegador bloqueou a nova janela. Use o link abaixo para abrir o WhatsApp.",
@@ -350,6 +358,7 @@ export function FlightQuoteForm() {
     }
 
     whatsappWindow.opener = null;
+    setHasOpenedWhatsApp(true);
     setFormStatus(
       "O WhatsApp foi aberto. A solicitação ainda não foi enviada; confira os dados e confirme o envio por lá.",
     );
@@ -800,11 +809,13 @@ export function FlightQuoteForm() {
             <button
               className="button button--accent flight-form__submit"
               type="submit"
-              disabled={isSubmitting || !isFormReady}
+              disabled={isSubmitting || hasOpenedWhatsApp || !isFormReady}
             >
-              {isSubmitting
-                ? "Abrindo WhatsApp..."
-                : "Enviar solicitação pelo WhatsApp"}
+              {hasOpenedWhatsApp
+                ? "WhatsApp aberto"
+                : isSubmitting
+                  ? "Abrindo WhatsApp..."
+                  : "Enviar solicitação pelo WhatsApp"}
             </button>
           </div>
         </section>

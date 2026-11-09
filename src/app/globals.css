@@ -2131,6 +2131,16 @@ img {
     width: 100%;
   }
 
+  .flight-form__step-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .flight-form__step-actions .button {
+    width: 100%;
+    min-width: 0;
+  }
+
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2848,5 +2858,210 @@ body {
   .smooth-scroll__panel--destination .smooth-scroll__title,
   .smooth-scroll__panel--destination .smooth-scroll__title::before {
     transition: none;
+  }
+}
+
+.admin-auth-page,
+.admin-page {
+  min-height: 100svh;
+  background:
+    radial-gradient(ellipse at 50% 0, rgb(10 39 64 / 68%), transparent 58%),
+    #061c31;
+  color: #f7f8fa;
+}
+
+.admin-auth-page {
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 5vw, 3rem);
+}
+
+.admin-auth-card {
+  width: min(100%, 28rem);
+  padding: clamp(1.5rem, 6vw, 2.75rem);
+  border: 1px solid rgb(211 214 220 / 18%);
+  border-radius: 1rem;
+  background: rgb(10 39 64 / 86%);
+  box-shadow: 0 1.5rem 5rem rgb(0 0 0 / 24%);
+}
+
+.admin-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #f7f8fa;
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.admin-brand__mark {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  place-items: center;
+  border: 1px solid #d9a441;
+  border-radius: 0.65rem;
+  color: #f1c875;
+  font-size: 0.85rem;
+}
+
+.admin-eyebrow {
+  margin: 2.5rem 0 0.65rem;
+  color: #f1c875;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.admin-auth-title {
+  margin: 0;
+  font-size: clamp(1.75rem, 7vw, 2.25rem);
+  line-height: 1.15;
+}
+
+.admin-auth-description,
+.admin-auth-footer {
+  color: #d3d6dc;
+  line-height: 1.6;
+}
+
+.admin-auth-description {
+  margin: 0.75rem 0 1.75rem;
+}
+
+.admin-form {
+  display: grid;
+  gap: 1.15rem;
+}
+
+.admin-field {
+  display: grid;
+  gap: 0.5rem;
+  color: #f7f8fa;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.admin-field input {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid rgb(211 214 220 / 30%);
+  border-radius: 0.55rem;
+  background: #061c31;
+  color: #f7f8fa;
+  font: inherit;
+}
+
+.admin-field input:focus-visible,
+.admin-submit:focus-visible,
+.admin-logout:focus-visible {
+  outline: 3px solid #f1c875;
+  outline-offset: 3px;
+}
+
+.admin-submit {
+  min-height: 3.1rem;
+  border: 1px solid #f1c875;
+  border-radius: 0.55rem;
+  background: #d9a441;
+  color: #061c31;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  transition: background-color 160ms ease;
+}
+
+.admin-submit:hover:not(:disabled) {
+  background: #f1c875;
+}
+
+.admin-submit:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.admin-error {
+  margin: 0;
+  color: #ffd2d2;
+  font-size: 0.9rem;
+}
+
+.admin-auth-footer {
+  margin: 1.75rem 0 0;
+  border-top: 1px solid rgb(211 214 220 / 18%);
+  padding-top: 1rem;
+  font-size: 0.8rem;
+}
+
+.admin-page {
+  padding: clamp(1rem, 4vw, 3rem);
+}
+
+.admin-shell {
+  width: min(100%, 76rem);
+  margin-inline: auto;
+}
+
+.admin-header {
+  display: flex;
+  min-height: 4.5rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid rgb(211 214 220 / 18%);
+}
+
+.admin-logout {
+  min-height: 2.75rem;
+  padding: 0.65rem 1rem;
+  border: 1px solid rgb(241 200 117 / 65%);
+  border-radius: 0.5rem;
+  background: transparent;
+  color: #f1c875;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.admin-logout:hover {
+  background: rgb(217 164 65 / 12%);
+}
+
+.admin-welcome {
+  max-width: 44rem;
+  padding-block: clamp(4rem, 12vw, 8rem);
+}
+
+.admin-welcome .admin-eyebrow {
+  margin-top: 0;
+}
+
+.admin-welcome h1 {
+  margin: 0;
+  font-size: clamp(2rem, 7vw, 3.5rem);
+}
+
+.admin-welcome > p:last-child,
+.admin-loading {
+  color: #d3d6dc;
+  line-height: 1.7;
+}
+
+.admin-loading {
+  width: min(100%, 76rem);
+  margin: 0 auto;
+  padding-top: 5rem;
+}
+
+@media (max-width: 420px) {
+  .admin-header {
+    align-items: flex-start;
+    flex-direction: column;
+    padding-block: 0.75rem;
   }
 }
